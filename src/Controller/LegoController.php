@@ -18,22 +18,27 @@ use App\Entity\lego as lego;
 class LegoController extends AbstractController
 {
     private $legos = [];
-   // L’attribute #[Route] indique ici que l'on associe la route
-   // "/" à la méthode home pour que Symfony l'exécute chaque fois
-   // que l'on accède à la racine de notre site.
-
-   public function __construct() {
-    $chaine = file_get_contents("../src/data.json");
-    $legosAll = json_decode($chaine);
+    // L’attribute #[Route] indique ici que l'on associe la route
+    // "/" à la méthode home pour que Symfony l'exécute chaque fois
+    // que l'on accède à la racine de notre site.
     
-    
-    foreach ($legosAll as $leg) {
-        $lego = new lego($leg->id, $leg->name, $leg->collection);
+    public function __construct() {
+        $chaine = file_get_contents("../src/data.json");
+        $legosAll = json_decode($chaine);
         
+
+        foreach ($legosAll as $leg) {
+            
+            $lego = new lego($leg->id, $leg->name, $leg->collection);
+            $lego->setPrice($leg->price);
+            $lego->setPieces($leg->pieces);
+            $lego->setDescription($leg->description);
+            $lego->setBoxImage($leg->images->box);
+            $lego->setLegoImage($leg->images->bg);
+            array_push($this->legos, $lego);
+        }
+    /* dump($this->legos); */
     }
-    dump($legos);
-    die();
-}
 
     
 
@@ -83,8 +88,23 @@ public function home()
     ]);
     } */
 
-    #[Route('/', )]
+    /* #[Route('/', )]
     public function home() {
-        return $this->render('base.html.twig', []);
+        return $this->render('lego.html.twig', [
+
+            'legos' => $this->legos
+        ]);
+    } */
+
+    
+    #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(all|creator|star_wars|creator_expert)'])]
+    
+    public function filter($collection): Response
+    {
+        return $this->render('lego.html.twig', [
+
+            'legos' => $this->legos
+        ]);
     }
+
 }
