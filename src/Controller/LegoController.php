@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use stdClass;
 use App\Entity\lego as lego;
+use App\Service\CreditsGenerator;
+use App\Service\DatabaseInterface;
 
 
 
@@ -88,16 +90,25 @@ public function home()
     ]);
     } */
 
-    /* #[Route('/', )]
-    public function home() {
+    #[Route('/', )]
+    /* public function home() {
         return $this->render('lego.html.twig', [
 
             'legos' => $this->legos
         ]);
     } */
+    public function legobd(DatabaseInterface $legobd): Response
+    {
+        $legs = new Response($legobd->getAllLegos());
+
+        return $this->render('lego.html.twig', [
+
+            'legos' => $legs
+        ]);
+    }
 
     
-    #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(all|creator|star_wars|creator_expert)'])]
+    /* #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(all|creator|star_wars|creator_expert)'])]
     
     public function filter($collection): Response
     {
@@ -105,6 +116,32 @@ public function home()
 
             'legos' => $this->legos
         ]);
+    }
+
+} */
+
+    #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(creator|star_wars|creator_expert)'])]
+    public function filter($collection): Response
+    {
+        $filter = array_filter($this->legos, function(lego $lego) use ($collection) {
+
+            $col = strtolower($lego->collection);
+            $col = str_replace(' ', '_', $col);
+
+            return $col == $collection;
+        });
+
+        return $this->render('lego.html.twig', [
+
+            'legos' => $filter
+        ]);
+    }
+
+
+    #[Route('/credits', 'credits')]
+    public function credits(CreditsGenerator $credits): Response
+    {
+        return new Response($credits->getCredits());
     }
 
 }
