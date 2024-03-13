@@ -14,7 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use App\Entity\Lego as Lego;
+use App\Entity\LegoCollection;
 use App\Repository\LegoRepository;
+use App\Repository\LegoCollectionRepository;
 use App\Service\CreditsGenerator;
 use App\Service\DatabaseInterface;
 
@@ -107,21 +109,28 @@ public function home()
 
 } */
 
-    #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(creator|star_wars|creator_expert|harry_potter)'])]
+    /* #[Route('/{collection}', 'filter_by_collection', requirements: ['collection' => '(creator|star_wars|creator_expert|harry_potter)'])]
     public function filter($collection, LegoRepository $legobd): Response
     {
         $col = str_replace('_', ' ', $collection);
         $col = ucwords($col);
 
         $legosFilter = $legobd->findBy(
-            ['collection' => $col]
+            ['collection->id' => $col]
         );
 
         return $this->render('lego.html.twig', [
 
             'legos' => $legosFilter
         ]);
+    } */
+
+    #[Route('/test/{id}', 'test')]
+    public function test(LegoCollection $collection): Response
+    {
+        dd($collection);
     }
+
 
 
     #[Route('/credits', 'credits')]
