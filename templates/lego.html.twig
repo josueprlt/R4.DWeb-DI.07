@@ -3,10 +3,14 @@
 {% block section_lego %}
 <nav>
   <a href="/">All</a> |
-  <a href="/creator">Creator</a> |
-  <a href="/creator_expert">Creator Expert</a> |
-  <a href="/star_wars">Star Wars</a> |
-  <a href="/harry_potter">Harry Potter</a> |
+  <a href="/Creator">Creator</a> |
+  <a href="/Creator Expert">Creator Expert</a> |
+  <a href="/Star Wars">Star Wars</a> |
+  <a href="/Harry Potter">Harry Potter</a> |
+
+  {# {% for coll in collection %}
+    | <a href="/{{coll.name}}">{{coll.name}}</a>
+    {% endfor %} #}
 </nav>
 {% for lego in legos %}
 <div class="lego_card">

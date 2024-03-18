@@ -125,12 +125,30 @@ public function home()
         ]);
     } */
 
-    #[Route('/test/{id}', 'test')]
-    public function test(LegoCollection $collection): Response
+    /* #[Route('/test/{id}', 'test')]
+    public function test(int $id, LegoCollectionRepository $legoCollectionRepository): Response
     {
+        $collection = $legoCollectionRepository->find($id);
         dd($collection);
-    }
+    } */
 
+
+    /* #[Route('/collection/{id}', 'collection')]
+    public function coll(LegoCollection $collection): Response
+    {
+        dd($collection->getLegos());
+    } */
+
+    #[Route('/{name}', 'filter_by_name', requirements: ['name' => 'Creator|Star Wars|Creator Expert|Harry Potter'])]
+    public function filter(LegoCollection $legoCollection, LegoCollectionRepository $legCollRepo): Response
+    {
+
+        // dd($this->legoRepository->findByCollection($name));
+        return $this->render("lego.html.twig", [
+            'legos' => $legoCollection->getLegos(),
+            'collection' => $legCollRepo->findAll(),
+        ]);
+    }
 
 
     #[Route('/credits', 'credits')]
