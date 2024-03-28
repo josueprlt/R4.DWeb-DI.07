@@ -1,18 +1,20 @@
 {% extends "base.html.twig" %}
-
-{% block section_lego %}
+{% block body %}
 <nav>
-  <a href="/">All</a> |
-  <a href="/Creator">Creator</a> |
-  <a href="/Creator Expert">Creator Expert</a> |
-  <a href="/Star Wars">Star Wars</a> |
-  <a href="/Harry Potter">Harry Potter</a> |
-
-  {# {% for coll in collection %}
+    <a href="/">All</a> 
+    {# <a href="/Creator">Creator</a> |
+    <a href="/Creator_Expert">Creator Expert</a> |
+    <a href="/Star_Wars">Star Wars</a> |
+    <a href="/Harry_Potter">Harry Potter</a>  #}
+    
+    {% for coll in collection %}
     | <a href="/{{coll.name}}">{{coll.name}}</a>
-    {% endfor %} #}
+    {% endfor %}
+
 </nav>
 {% for lego in legos %}
+
+
 <div class="lego_card">
       <div class="info_section">
         <div class="lego_header">

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Lego;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use App\Entity\Lego as Lego;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[AsCommand(
     name: 'app:populate-database',
@@ -18,55 +18,51 @@ use App\Entity\Lego as Lego;
 )]
 class PopulateDatabaseCommand extends Command
 {
-    private $EntityManager;
-
-    public function __construct(EntityManagerInterface $EntityManager)
+    private $entityMana;
+    
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->EntityManager = $EntityManager;
         parent::__construct();
+        $this->entityMana = $entityManager;
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('file', InputArgument::REQUIRED, 'Argument description');
+            ->addArgument('file', InputArgument::REQUIRED, 'name of the file in src/Data/');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('file');
+        /*$io = new SymfonyStyle($input, $output);
+        $file = $input->getArgument('file');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        if ($file) {
+            $io->note(sprintf('You passed an argument: %s', $file));
         }
 
-        /* if ($input->getOption('option1')) {
+        if ($input->getOption('option1')) {
             // ...
-        } */
-
-        $chaine = file_get_contents($arg1);
-        $legosAll = json_decode($chaine);
-
-
-        foreach ($legosAll as $leg) {
-            $lego = new Lego();
-            /* $lego->setCollection($leg->collection); */
-            $lego->setId($leg->id);
-            $lego->setName($leg->name);
-            $lego->setDescription($leg->description);
-            $lego->setPrice($leg->price);
-            $lego->setPieces($leg->pieces);
-            $lego->setBoxImage($leg->images->box);
-            $lego->setLegoImage($leg->images->bg);
-
-            $ent = $this->EntityManager;
-            
-            $ent->persist($lego);
-            $ent->flush();
         }
 
-        $io->success('Les éléments ont étés créés avec succès !');
+        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');*/
+
+        $json = file_get_contents(__DIR__."/../Data/".$input->getArgument('file'));
+        $json = json_decode($json);
+
+        foreach ($json as $obj) {
+            $lego = new Lego($obj->id);
+            $lego->setName($obj->name);
+            //$lego->setCollection($obj->collection);
+            $lego->setPrice($obj->price);
+            $lego->setPieces($obj->pieces);
+            $lego->setDescription($obj->description);
+            $lego->setLegoImage($obj->images->bg);
+            $lego->setBoxImage($obj->images->box);
+
+            $this->entityMana->persist($lego);
+            $this->entityMana->flush();
+        }
 
         return Command::SUCCESS;
     }

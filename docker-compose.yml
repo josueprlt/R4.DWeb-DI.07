@@ -23,14 +23,13 @@ services:
     working_dir: /var/www/html
 
   mysql:
-    container_name: tp-symfony-mysql
-    image: mysql:8
-    volumes:
-      - database:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: lego_store
-
+      container_name: tp-symfony-mysql
+      image: mysql:8
+      volumes:
+        - database:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: lego_store
 
   phpmyadmin:
     container_name: tp-symfony-phpmyadmin
@@ -43,7 +42,6 @@ services:
       - "8788:80"
     depends_on:
       - mysql
-
 
 volumes:
   database:

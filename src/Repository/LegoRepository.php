@@ -23,43 +23,43 @@ class LegoRepository extends ServiceEntityRepository
 
     public function findAllCollections(): array
     {
-        return $this->createQueryBuilder('b')
-            ->select('DISTINCT b.collection')
+        return $this->createQueryBuilder('l')
+            ->select('DISTINCT l.collection')
             ->getQuery()
             ->getResult();
     }
 
     public function findByCollection(string $collection): array
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.collection = :collection')
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.collection = :collection')
             ->setParameter('collection', $collection)
             ->getQuery()
             ->getResult();
     }
 
-//    /**
-//     * @return Lego[] Returns an array of Lego objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Lego[] Returns an array of Lego objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('l.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Lego
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Lego
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

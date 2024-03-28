@@ -1,6 +1,5 @@
 <?php
 
-
 // Là ou la classe est déclarée (où son fichier se trouve)
 namespace App\Service;
 
