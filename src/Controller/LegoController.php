@@ -88,7 +88,7 @@ public function home()
     #[Route('/',)]
     public function legobd(LegoRepository $legobd): Response
     {
-        /* dump($legobd->findAll()); */
+        dump($legobd->findAll());
 
         return $this->render('lego.html.twig', [
 

@@ -23,16 +23,16 @@ class LegoRepository extends ServiceEntityRepository
 
     public function findAllCollections(): array
     {
-        return $this->createQueryBuilder('l')
-            ->select('DISTINCT l.collection')
+        return $this->createQueryBuilder('b')
+            ->select('DISTINCT b.collection')
             ->getQuery()
             ->getResult();
     }
 
     public function findByCollection(string $collection): array
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.collection = :collection')
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.collection = :collection')
             ->setParameter('collection', $collection)
             ->getQuery()
             ->getResult();
